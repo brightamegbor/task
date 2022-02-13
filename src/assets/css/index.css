@@ -27,3 +27,47 @@ code {
 .c-mr-12:not(:first-child) {
   margin-right: 3rem;
 }
+
+@media (width: 820px) {
+  .mdd\:w-full {
+    width: 100%;
+  }
+
+  .mdd\:max-w-xs {
+    width: 30%;
+  }
+}
+
+@media (width: 768px) {
+  .mdd\:w-full {
+    width: 100%;
+  }
+
+  .mdd\:max-w-xs {
+    width: 30%;
+  }
+}
+
+@media (width: 912px) {
+  .mdd\:w-full {
+    width: 100%;
+  }
+
+  .mdd\:max-w-xs {
+    width: 30%;
+  }
+}
+
+@media (width: 1024px) {
+  .mdd\:w-full {
+    width: 25%;
+  }
+
+  .mdd\:max-w-xs {
+    width: 30%;
+  }
+
+  .mdd\:mt-0 {
+    margin-top: 0 !important;
+  }
+}

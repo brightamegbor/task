@@ -32,18 +32,18 @@ class Home extends Component<any> {
       <div className="container mx-auto">
         <p className="pt-8"></p>
         {/* top bar start */}
-        <div className="flex flex-row flex-wrap justify-between items-center">
+        <div className="flex md:flex-row flex-wrap flex-col space-y-4 md:justify-between items-center">
           {/* search input area */}
-          <div className="flex flex-row justify-between align-middle content-center">
-              <div className="pr-4 search-input">
+          <div className="flex flex-row justify-center mx-4 mdd:w-full">
+              <div className="search-input w-full">
                 <OutlinedInput type="text" placeholder="Search Templates" label=""
               suffixIcon={ <FiSearch color="gray" />} size="40" />
             
             </div>
           </div>
 
-          <div className="flex flex-row items-center">
-            <p className="pr-4">Sort By:</p>
+          <div className="flex flex-row flex-wrap items-center justify-center md:space-y-0 space-y-4 mx-4 mdd:mt-0">
+            <p className="pr-4 pl-4 md:pl-0">Sort By:</p>
 
             <div className="pr-4">
                 <OutlinedSelect placeholder="Category" label="Category"
@@ -51,12 +51,12 @@ class Home extends Component<any> {
               onChange={this.onCategoryChanged} selected={this.props.activeCategory}/>
             </div>
 
-            <div className="pr-4">
+            <div className="pr-4 w-1/2 md:w-48">
                 <OutlinedInput type="text" placeholder="Order" label="Order"
               suffixIcon={<BsChevronDown />} />
             </div>
 
-            <div className="">
+            <div className="w-1/2 md:w-48">
                 <OutlinedInput type="text" placeholder="Date" label="Date"
               suffixIcon={<BsChevronDown />} />
             </div>
@@ -66,7 +66,7 @@ class Home extends Component<any> {
 
         {/* tada text */}
 
-        <div className="mt-16 flex flex-row justify-center items-center info-banner p-2">
+        <div className="mx-4 mt-16 flex flex-row justify-center items-center info-banner p-2">
           <BsInfoCircle className="mr-2" color="#FC830A" size={25} /> 
           <p>Tada! Get started with a free template. Can’t find what you are looking for? Search from the 1000+ available templates</p>
         </div>
@@ -76,7 +76,7 @@ class Home extends Component<any> {
         <p className="pt-4"></p>
 
         {/* content header text */}
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row justify-between mx-4">
           <p>{this.props.activeCategory} Templates</p>
           <p className="text-gray-500">{this.props.totalTemplates} templates</p>
         </div>
@@ -84,6 +84,7 @@ class Home extends Component<any> {
         <p className="pt-4"></p>
         <p className="pt-4"></p>
 
+        {/* loadin indicator */}
         {this.props.loading && <div className="flex justify-center items-center pb-4">
           <button type="button" className="bg-gray-50 flex flex-row items-center rounded-lg shadow p-2" disabled>
           
@@ -96,22 +97,22 @@ class Home extends Component<any> {
         </div>}
         
         {/* content cards */}
-        <div className="flex flex-row flex-wrap justify-between">
+        <div className="flex flex-wrap justify-between mx-4">
           {this.props.templates.map((template:any, index:number) => (
             <Fragment key={index}>{index < 15 &&
-              <div className="max-w-sm w-96 rounded overflow-hidden shadow-custom mb-16">
-                <div className="flex flex-col place-content-between">
+              <div className="w-full md:max-w-sm mdd:max-w-xs rounded flex flex-col overflow-hidden shadow-custom mb-16">
+                {/* <div className="flex flex-col content-between"> */}
                   <div className="px-6 py-4">
                     {/* name  */}
                     <div className="font-bold text-xl mb-2">{template.name}</div>
                     {/* description */}
-                    <p className="text-gray-700 text-base">
+                    <p className="text-gray-700 text-base flex-1">
                       {template.description}</p>
                   </div>
-                  <div className="px-6 mt-4 pt-4 pb-2 bg-gray-50">
+                  <div className="px-6 pt-2 pb-2 bg-gray-50 mt-auto">
                     <span className="px-3 py-1 text-sm font-semibold text-green-500 mb-2">Use Template</span>
                   </div>
-                </div>
+                {/* </div> */}
               </div>
             }</Fragment>
           ))}
@@ -123,7 +124,7 @@ class Home extends Component<any> {
         <p className="pt-4"></p>
 
         {/* footer paginations */}
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-row flex-wrap justify-between mx-4">
           <p>Previous</p>
 
           <div>
@@ -146,10 +147,6 @@ class Home extends Component<any> {
 }
 
 
-
-// const mapStateToProps = (state: any) => ({
-//   templates: state.templates
-// });
 
 const mapStateToProps = (state: any) => {
   return {

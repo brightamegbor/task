@@ -27,7 +27,7 @@ const slice = createSlice({
           
           templates.loading = false;
           
-          templates.totalPage = action.payload.length ? action.payload.length  / 15 : templates.totalPage;
+          templates.totalPage = action.payload.length ? Math.round(action.payload.length  / 15) : templates.totalPage;
           templates.totalTemplates = action.payload.length ? action.payload.length : templates.totalPage;
           
           templates.unfilteredList = action.payload;
@@ -57,7 +57,8 @@ const slice = createSlice({
 
         state.activeCategory = action.template
 
-        const filteredList = state.unfilteredList.filter(tem => tem.category.includes(action.template));
+        const filteredList = action.template === "All" ? state.unfilteredList
+        : state.unfilteredList.filter(tem => tem.category.includes(action.template));
         
         state.list = filteredList;
         state.totalPage = filteredList.length ? filteredList.length  / 15 : 0;

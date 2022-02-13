@@ -14,8 +14,8 @@ class OutlinedInput extends Component<any> {
 
   render() {
     return (
-      <div className="material-textfield">
-        <input placeholder={this.props.placeholder} type={this.props.type} size={this.props.size} />
+      <div className="material-textfield w-full">
+        <input placeholder={this.props.placeholder} className="w-full" type={this.props.type} size={this.props.size} />
         <label>{this.props.label}</label>
         <i className="suffixIcon">{this.props.suffixIcon}</i>
       </div>
