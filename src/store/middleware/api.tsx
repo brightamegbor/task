@@ -1,17 +1,19 @@
 import axios from "axios";
 import * as actions from "../api";
-import { Dispatch } from 'redux';
+// import { Dispatch } from 'redux';
 
 
 const api =
-  (dispatch: Dispatch<any>) =>
-  (next: (arg0: any) => void) =>
-  async (action: { type: string; payload: { url: any; method: any; data: any; onStart: any; onSuccess: any; onError: any; }; }) => {
+  ({ dispatch }: {dispatch: any}) =>
+  (next:any) =>
+  async (action:any) => {
     if (action.type !== actions.apiCallBegan.type) return next(action);
 
     const { url, method, data, onStart, onSuccess, onError } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
+
+    console.log("starting 2");
 
     next(action);
 
@@ -22,6 +24,8 @@ const api =
         method,
         data,
       });
+
+      console.log(response.data);
       // General
       dispatch(actions.apiCallSuccess(response.data));
       // Specific

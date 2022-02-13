@@ -1,12 +1,16 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { Dispatch } from "react";
+import { Dispatch } from "redux";
 import { apiCallBegan } from "./api";
 
 const slice = createSlice({
   name: "templates",
   initialState: {
       list: [] as any[],
+      unfilteredList: [] as any[],
       loading: false,
+      totalPage: 1,
+      totalTemplates: 0,
+      activeCategory: "All"
   },
 
   reducers: {
@@ -15,11 +19,18 @@ const slice = createSlice({
       },
 
       templateReceived: (templates, action) => {
-          templates.list = templates.list.length ? [...templates.list, ...action.payload] : action.payload;
+          // templates.list = templates.list.length ? [...templates.list, ...action.payload] : action.payload;
           
-          templates.list = templates.list.filter((val,id,array) => array.findIndex(va => va.id === val.id) === id);
+          // templates.list = templates.list.filter((val,id,array) => array.findIndex(va => va.id === val.id) === id);
+          
+          templates.list = action.payload;
           
           templates.loading = false;
+          
+          templates.totalPage = action.payload.length ? action.payload.length  / 15 : templates.totalPage;
+          templates.totalTemplates = action.payload.length ? action.payload.length : templates.totalPage;
+          
+          templates.unfilteredList = action.payload;
       },
 
       templateRequestFailed: (templates, action) => {
@@ -40,18 +51,27 @@ const slice = createSlice({
         ];
       },
 
-      addTemplateData: (state, action) => {
+      changeCategoryData: (state, action:any) => {
+        console.log("changing");
+        console.log(action.template);
 
-        const templatesState = current(state);
-        const template = action.payload.template;
-        const templates = templatesState.list;
+        state.activeCategory = action.template
 
-        state.list = [
-          ...templates,
-          {
-            ...template,
-          }
-        ];
+        const filteredList = state.unfilteredList.filter(tem => tem.category.includes(action.template));
+        
+        state.list = filteredList;
+        state.totalPage = filteredList.length ? filteredList.length  / 15 : 0;
+        state.totalTemplates = filteredList.length;
+          
+        // const template = action.payload.template;
+        // const templates = templatesState.list;
+
+        // state.list = [
+        //   ...templates,
+        //   {
+        //     ...template,
+        //   }
+        // ];
       },
 
       removeTemplateData: (state, action) => {
@@ -94,13 +114,14 @@ const slice = createSlice({
 export default slice.reducer;
 
 const { templateRequested, templateReceived, templateRequestFailed, 
-  updateTemplatesData, addTemplateData, removeTemplateData, sortTemplateDataByUsername,
+  updateTemplatesData, changeCategoryData, removeTemplateData, sortTemplateDataByUsername,
   sortTemplateDataById } = slice.actions;
 
 const url = "/task_templates";
 
-export const loadTemplates = () => (dispatch: Dispatch<any>) => {
-  return dispatch(
+export const loadTemplates = () => (dispatch: Dispatch) => {
+  console.log("starting");
+  return dispatch<any>(
       apiCallBegan({
           url,
           onStart: templateRequested.type,
@@ -118,9 +139,9 @@ export const updateTemplates = (template: any) => {
    }
 }
 
-export const addUser = (template: any) => {
+export const changeCategory = (template: any) => {
   return {
-    type: addTemplateData.type,
+    type: changeCategoryData.type,
     template
    }
 }

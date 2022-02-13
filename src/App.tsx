@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import configStore from "store/configure_store";
 import Home from "components/home";
 
-const store = configStore();
+let store = configStore();
 
 function App() {
   return (

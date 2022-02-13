@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import reducer from "./users";
+import reducer from "./templates";
 import api from "./middleware/api";
 
 export default function configStore() {
   return configureStore({
       reducer: reducer,
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat<any>(api),
+      middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false,}).concat<any>(api),
   });
 }

@@ -1,0 +1,48 @@
+.material-textfield {
+  position: relative;
+}
+
+.material-textfield label {
+  position: absolute;
+  font-size: 1rem;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  color: gray;
+  padding: 0 0.3rem;
+  margin: 0 0.5rem;
+  transition: 0.1s ease-out;
+  transform-origin: left top;
+  pointer-events: none;
+}
+
+.material-textfield select {
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid gray !important;
+  border-radius: 2px;
+  padding: 0.6rem 0.7rem;
+  color: gray;
+  transition: 0.1s ease-out;
+}
+
+.material-textfield select:focus {
+  border-color: gray;
+}
+
+.material-textfield select:focus + label {
+  color: gray;
+  top: 0;
+  transform: translateY(-50%) scale(0.9);
+}
+.material-textfield select:not(:placeholder-shown) + label {
+  top: 0;
+  transform: translateY(-50%) scale(0.9);
+}
+
+.material-textfield .suffixIcon {
+  position: absolute;
+  right: 15px;
+  top: 40%;
+}
