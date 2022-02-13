@@ -3,89 +3,89 @@ import { Dispatch } from "react";
 import { apiCallBegan } from "./api";
 
 const slice = createSlice({
-  name: "users",
+  name: "templates",
   initialState: {
       list: [] as any[],
       loading: false,
   },
 
   reducers: {
-      usersRequested: (users, action) => {
-          users.loading = true;
+      templateRequested: (templates, action) => {
+          templates.loading = true;
       },
 
-      usersReceived: (users, action) => {
-          users.list = users.list.length ? [...users.list, ...action.payload] : action.payload;
+      templateReceived: (templates, action) => {
+          templates.list = templates.list.length ? [...templates.list, ...action.payload] : action.payload;
           
-          users.list = users.list.filter((val,id,array) => array.findIndex(va => va.id === val.id) === id);
+          templates.list = templates.list.filter((val,id,array) => array.findIndex(va => va.id === val.id) === id);
           
-          users.loading = false;
+          templates.loading = false;
       },
 
-      usersRequestFailed: (users, action) => {
-          users.loading = false;
+      templateRequestFailed: (templates, action) => {
+          templates.loading = false;
       },
 
-      updateUsersData: (state, action) => {
+      updateTemplatesData: (state, action) => {
 
-        let usersState = current(state);
-        let user = action.payload.user;
-        let users = usersState.list.filter(u => u.id !== user.id);
+        let templatesState = current(state);
+        let template = action.payload.template;
+        let templates = templatesState.list.filter(u => u.id !== template.id);
 
         state.list = [
-          ...users,
+          ...templates,
           {
-            ...user,
+            ...template,
           }
         ];
       },
 
-      addUserData: (state, action) => {
+      addTemplateData: (state, action) => {
 
-        const usersState = current(state);
-        const user = action.payload.user;
-        const users = usersState.list;
+        const templatesState = current(state);
+        const template = action.payload.template;
+        const templates = templatesState.list;
 
         state.list = [
-          ...users,
+          ...templates,
           {
-            ...user,
+            ...template,
           }
         ];
       },
 
-      removeUserData: (state, action) => {
+      removeTemplateData: (state, action) => {
 
-        let usersState = current(state);
-        let user = action.payload.user;
-        let users = usersState.list.filter(u => u.id !== user.id);
+        let templatesState = current(state);
+        let template = action.payload.template;
+        let templates = templatesState.list.filter(u => u.id !== template.id);
 
         state.list = [
-          ...users
+          ...templates
         ];
       },
 
-      sortUserDataById: (state, action) => {
+      sortTemplateDataById: (state, action) => {
 
-        let usersState = current(state);
-        let users = usersState.list.concat().sort((a, b) => a.id - b.id);
+        let templatesState = current(state);
+        let templates = templatesState.list.concat().sort((a, b) => a.id - b.id);
 
         state.list = [
-          ...users
+          ...templates
         ];
       },
 
-      sortUserDataByUsername: (state, action) => {
+      sortTemplateDataByUsername: (state, action) => {
 
-        let usersState = current(state);
+        let templatesState = current(state);
         let sortBy = action.payload.by;
-        let users = usersState.list.concat().sort(
+        let templates = templatesState.list.concat().sort(
           (a, b) => sortBy === "a-z" ? 
-          a.username.localeCompare(b.username)
-          : b.username.localeCompare(a.username));
+          a.templatename.localeCompare(b.templatename)
+          : b.templatename.localeCompare(a.templatename));
 
         state.list = [
-          ...users
+          ...templates
         ];
       },
   },
@@ -93,55 +93,55 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-const { usersRequested, usersReceived, usersRequestFailed, 
-  updateUsersData, addUserData, removeUserData, sortUserDataByUsername,
-  sortUserDataById } = slice.actions;
+const { templateRequested, templateReceived, templateRequestFailed, 
+  updateTemplatesData, addTemplateData, removeTemplateData, sortTemplateDataByUsername,
+  sortTemplateDataById } = slice.actions;
 
-const url = "/data";
+const url = "/task_templates";
 
-export const loadUsers = () => (dispatch: Dispatch<any>) => {
+export const loadTemplates = () => (dispatch: Dispatch<any>) => {
   return dispatch(
       apiCallBegan({
           url,
-          onStart: usersRequested.type,
-          onSuccess: usersReceived.type,
-          onError: usersRequestFailed.type,
+          onStart: templateRequested.type,
+          onSuccess: templateReceived.type,
+          onError: templateRequestFailed.type,
       })
   );
 };
 
 
-export const updateUsers = (user: any) => {
+export const updateTemplates = (template: any) => {
   return {
-    type: updateUsersData.type,
-    user
+    type: updateTemplatesData.type,
+    template
    }
 }
 
-export const addUser = (user: any) => {
+export const addUser = (template: any) => {
   return {
-    type: addUserData.type,
-    user
+    type: addTemplateData.type,
+    template
    }
 }
 
-export const removeUser = (user: any) => {
+export const removeUser = (template: any) => {
   return {
-    type: removeUserData.type,
-    user
+    type: removeTemplateData.type,
+    template
    }
 }
 
-export const sortUsersbyId = (sortBy: any) => {
+export const sortTemplatesbyId = (sortBy: any) => {
   return {
-    type: sortUserDataById.type,
+    type: sortTemplateDataById.type,
     by: sortBy
    }
 }
 
-export const sortUsersbyUsername = (sortBy: any) => {
+export const sortTemplatesbyUsername = (sortBy: any) => {
   return {
-    type: sortUserDataByUsername.type,
+    type: sortTemplateDataByUsername.type,
     by: sortBy
    }
 }

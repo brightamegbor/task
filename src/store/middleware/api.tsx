@@ -17,7 +17,7 @@ const api =
 
     try {
       const response = await axios.request({
-        baseURL: "https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb",
+        baseURL: "https://front-end-task-dot-result-analytics-dot-fpls-dev.uc.r.appspot.com/api/v1/public",
         url,
         method,
         data,
