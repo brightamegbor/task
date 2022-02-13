@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.2",
+    "cypress": "^9.4.1",
     "postcss": "^8.4.6",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^7.3.2",
