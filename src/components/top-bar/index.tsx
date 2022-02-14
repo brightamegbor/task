@@ -47,7 +47,7 @@ class TobBar extends Component<any> {
                 label="Order"
                 suffixIcon={<BsChevronDown />}
                 options={['Default', 'Ascending', 'Descending']}
-                onChange={() => null}
+                onChange={this.props.onOrderChanged}
                 selected=""
               />
             </div>

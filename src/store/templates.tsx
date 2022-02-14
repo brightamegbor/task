@@ -51,9 +51,6 @@ const slice = createSlice({
     },
 
     changeCategoryData: (state, action: any) => {
-      console.log('changing');
-      console.log(action.template);
-
       // set category value
       state.activeCategory = action.template;
 
@@ -123,15 +120,18 @@ const slice = createSlice({
       }
     },
 
-    sortTemplateDataByUsername: (state, action) => {
+    sortTemplateDataByName: (state, action: any) => {
+      if (action.by === 'Default') {
+        state.list = state.unfilteredList;
+        return;
+      }
+
       const templatesState = current(state);
-      const sortBy = action.payload.by;
+      const sortBy = action.by;
       const templates = templatesState.list
         .concat()
         .sort((a, b) =>
-          sortBy === 'a-z'
-            ? a.templatename.localeCompare(b.templatename)
-            : b.templatename.localeCompare(a.templatename)
+          sortBy === 'Ascending' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
         );
 
       state.list = [...templates];
@@ -148,14 +148,13 @@ const {
   updateTemplatesData,
   changeCategoryData,
   removeTemplateData,
-  sortTemplateDataByUsername,
+  sortTemplateDataByName,
   searchTemplateDataByName
 } = slice.actions;
 
 const url = '/task_templates';
 
 export const loadTemplates = () => (dispatch: Dispatch) => {
-  console.log('starting');
   return dispatch<any>(
     apiCallBegan({
       url,
@@ -194,9 +193,9 @@ export const searchTemplatesbyName = (name: string) => {
   };
 };
 
-export const sortTemplatesbyUsername = (sortBy: any) => {
+export const sortTemplatesbyName = (sortBy: any) => {
   return {
-    type: sortTemplateDataByUsername.type,
+    type: sortTemplateDataByName.type,
     by: sortBy
   };
 };

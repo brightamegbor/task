@@ -2,7 +2,12 @@ import { ChangeEvent, ChangeEventHandler, Component } from 'react';
 import { BsChevronRight } from 'react-icons/bs';
 import { BsInfoCircle } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { loadTemplates, changeCategory, searchTemplatesbyName } from 'store/templates';
+import {
+  loadTemplates,
+  changeCategory,
+  searchTemplatesbyName,
+  sortTemplatesbyName
+} from 'store/templates';
 import { bindActionCreators, Dispatch } from 'redux';
 import TobBar from './top-bar';
 import LoadingIndicator from './loading-indicator';
@@ -13,6 +18,7 @@ interface HomeActionProps {
   loadTemplates: typeof loadTemplates;
   changeCategory: typeof changeCategory;
   searchTemplatesbyName: typeof searchTemplatesbyName;
+  sortTemplatesbyName: typeof sortTemplatesbyName;
 }
 
 interface HomeProps {
@@ -37,6 +43,7 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
     loadTemplates: PropTypes.Requireable<() => void>;
     changeCategory: PropTypes.Requireable<ChangeEventHandler>;
     searchTemplatesbyName: PropTypes.Requireable<typeof searchTemplatesbyName>;
+    sortTemplatesbyName: PropTypes.Requireable<typeof sortTemplatesbyName>;
     activeCategory: PropTypes.Requireable<string>;
     totalTemplates: PropTypes.Requireable<number>;
     loading: PropTypes.Requireable<boolean>;
@@ -61,6 +68,17 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
     console.log(cat);
 
     this.props.changeCategory(cat);
+  };
+
+  onOrderChanged = (order: ChangeEvent<HTMLInputElement>) => {
+    const cat = order.target.value;
+    console.log(cat);
+
+    this.setState({
+      templateName: ''
+    });
+
+    this.props.sortTemplatesbyName(cat);
   };
 
   onSearchFieldChanged = (field: ChangeEvent<HTMLInputElement>) => {
@@ -92,6 +110,7 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
 
         <TobBar
           onCategoryChanged={this.onCatChanged}
+          onOrderChanged={this.onOrderChanged}
           activeCategory={this.props.activeCategory}
           onSearchFieldChanged={this.onSearchFieldChanged}
           onClickSearch={this.searchForTemplates}
@@ -162,7 +181,8 @@ Home.propTypes = {
   loading: PropTypes.bool,
   templates: PropTypes.any,
   totalPage: PropTypes.number,
-  searchTemplatesbyName: PropTypes.func
+  searchTemplatesbyName: PropTypes.func,
+  sortTemplatesbyName: PropTypes.func
 };
 
 const mapStateToProps = (state: IHomeState): HomeProps => {
@@ -178,7 +198,8 @@ const mapStateToProps = (state: IHomeState): HomeProps => {
 const mapDispatchToProps = (dispatch: Dispatch): HomeActionProps => ({
   loadTemplates: bindActionCreators(loadTemplates, dispatch),
   changeCategory: bindActionCreators(changeCategory, dispatch),
-  searchTemplatesbyName: bindActionCreators(searchTemplatesbyName, dispatch)
+  searchTemplatesbyName: bindActionCreators(searchTemplatesbyName, dispatch),
+  sortTemplatesbyName: bindActionCreators(sortTemplatesbyName, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home as any);
