@@ -14,7 +14,7 @@ const slice = createSlice({
   },
 
   reducers: {
-    templateRequested: (templates, action) => {
+    templateRequested: (templates) => {
       templates.loading = true;
     },
 
@@ -33,21 +33,8 @@ const slice = createSlice({
       templates.unfilteredList = action.payload;
     },
 
-    templateRequestFailed: (templates, action) => {
+    templateRequestFailed: (templates) => {
       templates.loading = false;
-    },
-
-    updateTemplatesData: (state, action) => {
-      const templatesState = current(state);
-      const template = action.payload.template;
-      const templates = templatesState.list.filter((u) => u.id !== template.id);
-
-      state.list = [
-        ...templates,
-        {
-          ...template
-        }
-      ];
     },
 
     changeCategoryData: (state, action: any) => {
@@ -74,14 +61,6 @@ const slice = createSlice({
         state.totalPage = filteredList.length ? Math.round(filteredList.length / 15) : 0;
         state.totalTemplates = filteredList.length;
       }
-    },
-
-    removeTemplateData: (state, action) => {
-      const templatesState = current(state);
-      const template = action.payload.template;
-      const templates = templatesState.list.filter((u) => u.id !== template.id);
-
-      state.list = [...templates];
     },
 
     searchTemplateDataByName: (state, action: any) => {
@@ -164,7 +143,6 @@ const {
   templateRequested,
   templateReceived,
   templateRequestFailed,
-  updateTemplatesData,
   changeCategoryData,
   sortTemplateDataByDate,
   sortTemplateDataByName,
@@ -182,13 +160,6 @@ export const loadTemplates = () => (dispatch: Dispatch) => {
       onError: templateRequestFailed.type
     })
   );
-};
-
-export const updateTemplates = (template: any) => {
-  return {
-    type: updateTemplatesData.type,
-    template
-  };
 };
 
 export const changeCategory = (template: any) => {
