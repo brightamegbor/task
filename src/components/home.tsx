@@ -71,14 +71,12 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
 
   onCategoryChanged = (category: ChangeEvent<HTMLInputElement>) => {
     const cat = category.target.value;
-    console.log(cat);
 
     this.props.changeCategory(cat);
   };
 
   onOrderChanged = (order: ChangeEvent<HTMLInputElement>) => {
     const _order = order.target.value;
-    console.log(_order);
 
     this.setState({
       activeDate: 'Default',
@@ -90,7 +88,6 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
 
   onDateChanged = (date: ChangeEvent<HTMLInputElement>) => {
     const _date = date.target.value;
-    console.log(_date);
 
     this.setState({
       activeOrder: 'Default',
@@ -109,7 +106,6 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
   };
 
   searchForTemplates = () => {
-    console.log(this.state.templateName);
     this.props.searchTemplatesbyName(this.state.templateName);
   };
 

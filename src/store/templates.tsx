@@ -153,7 +153,6 @@ const slice = createSlice({
             : new Date(b.created).getTime() - new Date(a.created).getTime()
         );
 
-      console.log(templates);
       state.list = [...templates];
     }
   }

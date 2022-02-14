@@ -11,8 +11,6 @@ const api =
 
     if (onStart) dispatch({ type: onStart });
 
-    console.log('starting 2');
-
     next(action);
 
     try {
@@ -24,7 +22,6 @@ const api =
         data
       });
 
-      console.log(response.data);
       // General
       dispatch(actions.apiCallSuccess(response.data));
       // Specific
