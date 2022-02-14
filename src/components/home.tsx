@@ -72,6 +72,13 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
   onCategoryChanged = (category: ChangeEvent<HTMLInputElement>) => {
     const cat = category.target.value;
 
+    this.setState({
+      templateName: '',
+      activeCategory: cat,
+      activeDate: 'Default',
+      activeOrder: 'Default'
+    });
+
     this.props.changeCategory(cat);
   };
 
@@ -110,11 +117,6 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
   };
 
   onCatChanged = (category: ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      templateName: '',
-      activeDate: 'Default',
-      activeOrder: 'Default'
-    });
     this.onCategoryChanged(category);
   };
 
