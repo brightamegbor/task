@@ -13,7 +13,7 @@ class TobBar extends Component<any> {
         <div className="flex md:flex-row flex-wrap flex-col space-y-4 md:justify-between items-center">
           {/* search input area */}
           <div className="flex flex-row justify-center mx-4 mdd:w-full">
-            <div className="search-input w-full">
+            <div className="search-input w-full mb-4">
               <OutlinedInput
                 type="text"
                 placeholder="Search Templates"
@@ -30,7 +30,7 @@ class TobBar extends Component<any> {
           <div className="flex flex-row flex-wrap items-center justify-center md:space-y-0 space-y-4 mx-4 mdd:mt-0 md:mt-0">
             <p className="pr-4 pl-4 md:pl-0">Sort By:</p>
 
-            <div className="pr-4">
+            <div className="pr-4 w-1/2 md:w-48">
               <OutlinedSelect
                 placeholder="Category"
                 label="Category"
@@ -48,7 +48,7 @@ class TobBar extends Component<any> {
                 suffixIcon={<BsChevronDown />}
                 options={['Default', 'Ascending', 'Descending']}
                 onChange={this.props.onOrderChanged}
-                selected=""
+                selected={this.props.activeOrder}
               />
             </div>
 
@@ -58,8 +58,8 @@ class TobBar extends Component<any> {
                 label="Date"
                 suffixIcon={<BsChevronDown />}
                 options={['Default', 'Ascending', 'Descending']}
-                onChange={() => null}
-                selected=""
+                onChange={this.props.onDateChanged}
+                selected={this.props.activeDate}
               />
             </div>
           </div>

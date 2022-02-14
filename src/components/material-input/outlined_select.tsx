@@ -25,9 +25,9 @@ class OutlinedSelect extends Component<OutlinedSelectProps> {
       <div className="material-textfield">
         <select
           placeholder={this.props.placeholder}
-          className="appearance-none w-48"
+          className="appearance-none w-full"
           onChange={this.props.onChange}
-          defaultValue={this.props.selected}>
+          value={this.props.selected}>
           {this.props.options.map((option: any, index: number) => (
             <option key={index} value={option}>
               {option}

@@ -135,6 +135,26 @@ const slice = createSlice({
         );
 
       state.list = [...templates];
+    },
+
+    sortTemplateDataByDate: (state, action: any) => {
+      if (action.by === 'Default') {
+        state.list = state.unfilteredList;
+        return;
+      }
+
+      const sortBy = action.date;
+      const templatesState = current(state);
+      const templates = templatesState.list
+        .concat()
+        .sort((a, b) =>
+          sortBy === 'Ascending'
+            ? new Date(a.created).getTime() - new Date(b.created).getTime()
+            : new Date(b.created).getTime() - new Date(a.created).getTime()
+        );
+
+      console.log(templates);
+      state.list = [...templates];
     }
   }
 });
@@ -147,7 +167,7 @@ const {
   templateRequestFailed,
   updateTemplatesData,
   changeCategoryData,
-  removeTemplateData,
+  sortTemplateDataByDate,
   sortTemplateDataByName,
   searchTemplateDataByName
 } = slice.actions;
@@ -179,10 +199,10 @@ export const changeCategory = (template: any) => {
   };
 };
 
-export const removeUser = (template: any) => {
+export const sortTemplateByDate = (date: any) => {
   return {
-    type: removeTemplateData.type,
-    template
+    type: sortTemplateDataByDate.type,
+    date
   };
 };
 

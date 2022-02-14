@@ -6,7 +6,8 @@ import {
   loadTemplates,
   changeCategory,
   searchTemplatesbyName,
-  sortTemplatesbyName
+  sortTemplatesbyName,
+  sortTemplateByDate
 } from 'store/templates';
 import { bindActionCreators, Dispatch } from 'redux';
 import TobBar from './top-bar';
@@ -19,6 +20,7 @@ interface HomeActionProps {
   changeCategory: typeof changeCategory;
   searchTemplatesbyName: typeof searchTemplatesbyName;
   sortTemplatesbyName: typeof sortTemplatesbyName;
+  sortTemplateByDate: typeof sortTemplateByDate;
 }
 
 interface HomeProps {
@@ -44,6 +46,7 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
     changeCategory: PropTypes.Requireable<ChangeEventHandler>;
     searchTemplatesbyName: PropTypes.Requireable<typeof searchTemplatesbyName>;
     sortTemplatesbyName: PropTypes.Requireable<typeof sortTemplatesbyName>;
+    sortTemplateByDate: PropTypes.Requireable<typeof sortTemplateByDate>;
     activeCategory: PropTypes.Requireable<string>;
     totalTemplates: PropTypes.Requireable<number>;
     loading: PropTypes.Requireable<boolean>;
@@ -55,7 +58,10 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
     super(props);
 
     this.state = {
-      templateName: ''
+      templateName: '',
+      activeCategory: '',
+      activeOrder: '',
+      activeDate: ''
     };
   }
 
@@ -71,14 +77,27 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
   };
 
   onOrderChanged = (order: ChangeEvent<HTMLInputElement>) => {
-    const cat = order.target.value;
-    console.log(cat);
+    const _order = order.target.value;
+    console.log(_order);
 
     this.setState({
-      templateName: ''
+      activeDate: 'Default',
+      activeOrder: _order
     });
 
-    this.props.sortTemplatesbyName(cat);
+    this.props.sortTemplatesbyName(_order);
+  };
+
+  onDateChanged = (date: ChangeEvent<HTMLInputElement>) => {
+    const _date = date.target.value;
+    console.log(_date);
+
+    this.setState({
+      activeOrder: 'Default',
+      activeDate: _date
+    });
+
+    this.props.sortTemplateByDate(_date);
   };
 
   onSearchFieldChanged = (field: ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +115,9 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
 
   onCatChanged = (category: ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      templateName: ''
+      templateName: '',
+      activeDate: 'Default',
+      activeOrder: 'Default'
     });
     this.onCategoryChanged(category);
   };
@@ -111,7 +132,10 @@ class Home extends Component<HomeProps & HomeActionProps, { [key: string]: strin
         <TobBar
           onCategoryChanged={this.onCatChanged}
           onOrderChanged={this.onOrderChanged}
-          activeCategory={this.props.activeCategory}
+          onDateChanged={this.onDateChanged}
+          activeCategory={this.state.activeCategory}
+          activeOrder={this.state.activeOrder}
+          activeDate={this.state.activeDate}
           onSearchFieldChanged={this.onSearchFieldChanged}
           onClickSearch={this.searchForTemplates}
           value={this.state.templateName}
@@ -182,7 +206,8 @@ Home.propTypes = {
   templates: PropTypes.any,
   totalPage: PropTypes.number,
   searchTemplatesbyName: PropTypes.func,
-  sortTemplatesbyName: PropTypes.func
+  sortTemplatesbyName: PropTypes.func,
+  sortTemplateByDate: PropTypes.func
 };
 
 const mapStateToProps = (state: IHomeState): HomeProps => {
@@ -199,7 +224,8 @@ const mapDispatchToProps = (dispatch: Dispatch): HomeActionProps => ({
   loadTemplates: bindActionCreators(loadTemplates, dispatch),
   changeCategory: bindActionCreators(changeCategory, dispatch),
   searchTemplatesbyName: bindActionCreators(searchTemplatesbyName, dispatch),
-  sortTemplatesbyName: bindActionCreators(sortTemplatesbyName, dispatch)
+  sortTemplatesbyName: bindActionCreators(sortTemplatesbyName, dispatch),
+  sortTemplateByDate: bindActionCreators(sortTemplateByDate, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home as any);
