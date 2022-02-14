@@ -1,14 +1,11 @@
-import OutlinedInput from "components/material-input/outlined_input";
-import OutlinedSelect from "components/material-input/outlined_select";
-import { Component } from "react";
-import { BsChevronDown } from "react-icons/bs";
-import { FiSearch } from "react-icons/fi";
+import OutlinedInput from 'components/material-input/outlined_input';
+import OutlinedSelect from 'components/material-input/outlined_select';
+import { Component } from 'react';
+import { BsChevronDown } from 'react-icons/bs';
+import { FiSearch } from 'react-icons/fi';
 
 class TobBar extends Component<any> {
-
-
-  render(){
-
+  render() {
     return (
       <div className="container mx-auto">
         <p className="pt-8"></p>
@@ -16,10 +13,17 @@ class TobBar extends Component<any> {
         <div className="flex md:flex-row flex-wrap flex-col space-y-4 md:justify-between items-center">
           {/* search input area */}
           <div className="flex flex-row justify-center mx-4 mdd:w-full">
-              <div className="search-input w-full">
-                <OutlinedInput type="text" placeholder="Search Templates" label=""
-              suffixIcon={ <FiSearch color="gray" />} size="40" />
-            
+            <div className="search-input w-full">
+              <OutlinedInput
+                type="text"
+                placeholder="Search Templates"
+                onChange={this.props.onSearchFieldChanged}
+                onClick={this.props.onClickSearch}
+                label=""
+                value={this.props.value}
+                suffixIcon={<FiSearch color="gray" />}
+                size={40}
+              />
             </div>
           </div>
 
@@ -27,27 +31,43 @@ class TobBar extends Component<any> {
             <p className="pr-4 pl-4 md:pl-0">Sort By:</p>
 
             <div className="pr-4">
-                <OutlinedSelect placeholder="Category" label="Category"
-              suffixIcon={<BsChevronDown />} options={[ "All", "Education", "E-commerce", "Health"]} 
-              onChange={this.props.onCategoryChanged} selected={this.props.activeCategory}/>
+              <OutlinedSelect
+                placeholder="Category"
+                label="Category"
+                suffixIcon={<BsChevronDown />}
+                options={['All', 'Education', 'E-commerce', 'Health']}
+                onChange={this.props.onCategoryChanged}
+                selected={this.props.activeCategory}
+              />
             </div>
 
             <div className="pr-4 w-1/2 md:w-48">
-                <OutlinedInput type="text" placeholder="Order" label="Order"
-              suffixIcon={<BsChevronDown />} />
+              <OutlinedSelect
+                placeholder="Order"
+                label="Order"
+                suffixIcon={<BsChevronDown />}
+                options={['Default', 'Ascending', 'Descending']}
+                onChange={() => null}
+                selected=""
+              />
             </div>
 
             <div className="w-1/2 md:w-48">
-                <OutlinedInput type="text" placeholder="Date" label="Date"
-              suffixIcon={<BsChevronDown />} />
+              <OutlinedSelect
+                placeholder="Date"
+                label="Date"
+                suffixIcon={<BsChevronDown />}
+                options={['Default', 'Ascending', 'Descending']}
+                onChange={() => null}
+                selected=""
+              />
             </div>
           </div>
         </div>
         {/* top bar end */}
       </div>
-    )
-    }
-
+    );
+  }
 }
 
-export default TobBar
+export default TobBar;

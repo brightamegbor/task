@@ -1,169 +1,202 @@
-import { createSlice, current } from "@reduxjs/toolkit";
-import { Dispatch } from "redux";
-import { apiCallBegan } from "./api";
+import { createSlice, current } from '@reduxjs/toolkit';
+import { Dispatch } from 'redux';
+import { apiCallBegan } from './api';
 
 const slice = createSlice({
-  name: "templates",
+  name: 'templates',
   initialState: {
-      list: [] as any[],
-      unfilteredList: [] as any[],
-      loading: false,
-      totalPage: 1,
-      totalTemplates: 0,
-      activeCategory: "All"
+    list: [] as any[],
+    unfilteredList: [] as any[],
+    loading: false,
+    totalPage: 1,
+    totalTemplates: 0,
+    activeCategory: 'All'
   },
 
   reducers: {
-      templateRequested: (templates, action) => {
-          templates.loading = true;
-      },
+    templateRequested: (templates, action) => {
+      templates.loading = true;
+    },
 
-      templateReceived: (templates, action) => {
-          // templates.list = templates.list.length ? [...templates.list, ...action.payload] : action.payload;
-          
-          // templates.list = templates.list.filter((val,id,array) => array.findIndex(va => va.id === val.id) === id);
-          
-          templates.list = action.payload;
-          
-          templates.loading = false;
-          
-          templates.totalPage = action.payload.length ? Math.round(action.payload.length  / 15) : templates.totalPage;
-          templates.totalTemplates = action.payload.length ? action.payload.length : templates.totalPage;
-          
-          templates.unfilteredList = action.payload;
-      },
+    templateReceived: (templates, action) => {
+      templates.list = action.payload;
 
-      templateRequestFailed: (templates, action) => {
-          templates.loading = false;
-      },
+      templates.loading = false;
 
-      updateTemplatesData: (state, action) => {
+      templates.totalPage = action.payload.length
+        ? Math.round(action.payload.length / 15)
+        : templates.totalPage;
+      templates.totalTemplates = action.payload.length
+        ? action.payload.length
+        : templates.totalPage;
 
-        let templatesState = current(state);
-        let template = action.payload.template;
-        let templates = templatesState.list.filter(u => u.id !== template.id);
+      templates.unfilteredList = action.payload;
+    },
 
-        state.list = [
-          ...templates,
-          {
-            ...template,
-          }
-        ];
-      },
+    templateRequestFailed: (templates, action) => {
+      templates.loading = false;
+    },
 
-      changeCategoryData: (state, action:any) => {
-        console.log("changing");
-        console.log(action.template);
+    updateTemplatesData: (state, action) => {
+      const templatesState = current(state);
+      const template = action.payload.template;
+      const templates = templatesState.list.filter((u) => u.id !== template.id);
 
-        state.activeCategory = action.template
+      state.list = [
+        ...templates,
+        {
+          ...template
+        }
+      ];
+    },
 
-        const filteredList = action.template === "All" ? state.unfilteredList
-        : state.unfilteredList.filter(tem => tem.category.includes(action.template));
-        
-        state.list = filteredList;
-        state.totalPage = filteredList.length ? filteredList.length  / 15 : 0;
+    changeCategoryData: (state, action: any) => {
+      console.log('changing');
+      console.log(action.template);
+
+      // set category value
+      state.activeCategory = action.template;
+
+      // filter the list based on category
+      if (action.template === 'All') {
+        state.list = state.unfilteredList.slice(0, 15); // slice the list to improve performance
+
+        // divide result by 15 to get total page number
+        state.totalPage = state.unfilteredList.length
+          ? Math.round(state.unfilteredList.length / 15)
+          : 0;
+        state.totalTemplates = state.unfilteredList.length;
+      } else {
+        state.list = state.unfilteredList
+          .filter((tem) => tem.category.includes(action.template))
+          .slice(0, 15);
+
+        const filteredList = state.unfilteredList.filter((tem) =>
+          tem.category.includes(action.template)
+        );
+        state.totalPage = filteredList.length ? Math.round(filteredList.length / 15) : 0;
         state.totalTemplates = filteredList.length;
-          
-        // const template = action.payload.template;
-        // const templates = templatesState.list;
+      }
+    },
 
-        // state.list = [
-        //   ...templates,
-        //   {
-        //     ...template,
-        //   }
-        // ];
-      },
+    removeTemplateData: (state, action) => {
+      const templatesState = current(state);
+      const template = action.payload.template;
+      const templates = templatesState.list.filter((u) => u.id !== template.id);
 
-      removeTemplateData: (state, action) => {
+      state.list = [...templates];
+    },
 
-        let templatesState = current(state);
-        let template = action.payload.template;
-        let templates = templatesState.list.filter(u => u.id !== template.id);
+    searchTemplateDataByName: (state, action: any) => {
+      const templatesState = current(state);
 
-        state.list = [
-          ...templates
-        ];
-      },
+      // slice the list to improve performance
+      if (templatesState.activeCategory !== 'All') {
+        state.list = templatesState.unfilteredList
+          .filter(
+            (item) =>
+              item.name.includes(action.name) &&
+              item.category.includes(templatesState.activeCategory)
+          )
+          .slice(0, 15);
 
-      sortTemplateDataById: (state, action) => {
+        // use the full list to get the total lengths
+        const templates = templatesState.unfilteredList.filter(
+          (item) =>
+            item.name.includes(action.name) && item.category.includes(templatesState.activeCategory)
+        );
 
-        let templatesState = current(state);
-        let templates = templatesState.list.concat().sort((a, b) => a.id - b.id);
+        state.totalPage = templates.length > 15 ? Math.round(templates.length / 15) : 1;
+        state.totalTemplates = templates.length;
+      } else {
+        state.list = templatesState.unfilteredList
+          .filter((item) => item.name.includes(action.name))
+          .slice(0, 15);
 
-        state.list = [
-          ...templates
-        ];
-      },
+        // use the full list to get the total lengths
+        const templates = templatesState.unfilteredList.filter((item) =>
+          item.name.includes(action.name)
+        );
 
-      sortTemplateDataByUsername: (state, action) => {
+        state.totalPage = templates.length > 15 ? Math.round(templates.length / 15) : 1;
+        state.totalTemplates = templates.length;
+      }
+    },
 
-        let templatesState = current(state);
-        let sortBy = action.payload.by;
-        let templates = templatesState.list.concat().sort(
-          (a, b) => sortBy === "a-z" ? 
-          a.templatename.localeCompare(b.templatename)
-          : b.templatename.localeCompare(a.templatename));
+    sortTemplateDataByUsername: (state, action) => {
+      const templatesState = current(state);
+      const sortBy = action.payload.by;
+      const templates = templatesState.list
+        .concat()
+        .sort((a, b) =>
+          sortBy === 'a-z'
+            ? a.templatename.localeCompare(b.templatename)
+            : b.templatename.localeCompare(a.templatename)
+        );
 
-        state.list = [
-          ...templates
-        ];
-      },
-  },
+      state.list = [...templates];
+    }
+  }
 });
 
 export default slice.reducer;
 
-const { templateRequested, templateReceived, templateRequestFailed, 
-  updateTemplatesData, changeCategoryData, removeTemplateData, sortTemplateDataByUsername,
-  sortTemplateDataById } = slice.actions;
+const {
+  templateRequested,
+  templateReceived,
+  templateRequestFailed,
+  updateTemplatesData,
+  changeCategoryData,
+  removeTemplateData,
+  sortTemplateDataByUsername,
+  searchTemplateDataByName
+} = slice.actions;
 
-const url = "/task_templates";
+const url = '/task_templates';
 
 export const loadTemplates = () => (dispatch: Dispatch) => {
-  console.log("starting");
+  console.log('starting');
   return dispatch<any>(
-      apiCallBegan({
-          url,
-          onStart: templateRequested.type,
-          onSuccess: templateReceived.type,
-          onError: templateRequestFailed.type,
-      })
+    apiCallBegan({
+      url,
+      onStart: templateRequested.type,
+      onSuccess: templateReceived.type,
+      onError: templateRequestFailed.type
+    })
   );
 };
-
 
 export const updateTemplates = (template: any) => {
   return {
     type: updateTemplatesData.type,
     template
-   }
-}
+  };
+};
 
 export const changeCategory = (template: any) => {
   return {
     type: changeCategoryData.type,
     template
-   }
-}
+  };
+};
 
 export const removeUser = (template: any) => {
   return {
     type: removeTemplateData.type,
     template
-   }
-}
+  };
+};
 
-export const sortTemplatesbyId = (sortBy: any) => {
+export const searchTemplatesbyName = (name: string) => {
   return {
-    type: sortTemplateDataById.type,
-    by: sortBy
-   }
-}
+    type: searchTemplateDataByName.type,
+    name
+  };
+};
 
 export const sortTemplatesbyUsername = (sortBy: any) => {
   return {
     type: sortTemplateDataByUsername.type,
     by: sortBy
-   }
-}
+  };
+};

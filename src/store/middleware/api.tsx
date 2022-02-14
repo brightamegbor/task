@@ -1,28 +1,27 @@
-import axios from "axios";
-import * as actions from "../api";
-// import { Dispatch } from 'redux';
-
+import axios from 'axios';
+import * as actions from '../api';
 
 const api =
-  ({ dispatch }: {dispatch: any}) =>
-  (next:any) =>
-  async (action:any) => {
+  ({ dispatch }: { dispatch: any }) =>
+  (next: any) =>
+  async (action: any) => {
     if (action.type !== actions.apiCallBegan.type) return next(action);
 
     const { url, method, data, onStart, onSuccess, onError } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
 
-    console.log("starting 2");
+    console.log('starting 2');
 
     next(action);
 
     try {
       const response = await axios.request({
-        baseURL: "https://front-end-task-dot-result-analytics-dot-fpls-dev.uc.r.appspot.com/api/v1/public",
+        baseURL:
+          'https://front-end-task-dot-result-analytics-dot-fpls-dev.uc.r.appspot.com/api/v1/public',
         url,
         method,
-        data,
+        data
       });
 
       console.log(response.data);
