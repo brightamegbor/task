@@ -6,38 +6,30 @@ Using React JS, create a simple Form Template Search Interface, with the form te
 Please read through this document extensively.
 
 Website layout\
-We created a Figma design to assist with this here. You are to replicate this design as closely as possible.
+We created a Figma design to assist with this [here](https://www.figma.com/file/vD8JgnXPUOROvSRAVYNE2o/Template-Page-Task?node-id=0%3A1). You are to replicate this design as closely as possible.
 
 
 ## API Endpoint
 URI: [https://front-end-task-dot-result-analytics-dot-fpls-dev.uc.r.appspot.com/api/v1/public/task_templates](https://front-end-task-dot-result-analytics-dot-fpls-dev.uc.r.appspot.com/api/v1/public/task_templates)
 \METHOD: GET\
 Response:\
-   [\
-      Template {\
+```
+   [
+      Template {
                  name: string <Template name>,
                  created: string <Template creation date in iso format>,
                  category: array[string] <Categories assigned to the template>
                  description: string <Template description>
                  link: string <Template link>
-              }\
+              }
  ]
+```
 
 Sample request:\
+ ```
    curl \ "https://front-end-task-dot-fpls-dev.uc.r.appspot.com/api/v1/public/task_templates" \
  -X GET 
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 
 Sample response:\
@@ -60,7 +52,7 @@ Sample response:\
  ]
  ```
 
-##Basic requirements\
+## Basic requirements\
 - Please try to make the final product look good and work as expected.
 - Please do not use any CSS framework like Bootstrap, Semantic UI, Material UI, etc. for this task. Write your styles CSS from scratch, but you can use CSS-in-JS, CSS modules, Tailwind, or SCSS for pre-processing.
 - This web application should be responsive; it should look great on mobile and tablet screens.
@@ -70,7 +62,7 @@ Sample response:\
 - You can also set up some form of linting or formatting for development if you want to.
 - Write at least one test with any library of your choice
    
-###Functional Requirements
+### Functional Requirements
 - There are 3 template categories; Only one category can be active at any time.
 - The active category is displayed as the Header of the Template Cards. E.g If the active category is Agriculture, the header should be “Agriculture Templates”
 - “All templates” is active by default. Changing the category section resets all other filters and the Search bar value.
