@@ -1,46 +1,77 @@
-# Getting Started with Create React App
+# Solution for below task (React App)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Overview
+Using React JS, create a simple Form Template Search Interface, with the form templates provided from a public Rest API. The basic requirements of this task must be fulfilled to be considered as passed. Further creative approaches are of course welcome and will count as a bonus but it’s not required. 
 
-## Available Scripts
+Please read through this document extensively.
+Website layout
+We created a Figma design to assist with this here. You are to replicate this design as closely as possible.
+API Endpoint
+URI: https://front-end-task-dot-result-analytics-dot-fpls-dev.uc.r.appspot.com/api/v1/public/task_templates
+METHOD: GET
+Response:
+   [
+      Template {
+                 name: string <Template name>,
+                 created: string <Template creation date in iso format>,
+                 category: array[string] <Categories assigned to the template>
+                 description: string <Template description>
+                 link: string <Template link>
+              }
+ ]
 
-In the project directory, you can run:
+Sample request:
+   curl \ "https://front-end-task-dot-fpls-dev.uc.r.appspot.com/api/v1/public/task_templates" \
+ -X GET 
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Sample response:
+   [
+  {
+    "name": "Blood donation form template",
+    "created": "2020-11-04T16:26:44.666569",
+    "category": [‘Health’],
+    "description": "Testing template",
+    "link": "",
+   },
+  {
+    "name": "Scholarship form template",
+    "created": "2020-12-04T16:26:44.666569",
+    "category": [‘Education’],
+    "description": "Sample scholarship template",
+    "link": "https://formpl.us",
+   }
+ ]
 
-## Learn More
+Basic requirements
+Please try to make the final product look good and work as expected.
+Please do not use any CSS framework like Bootstrap, Semantic UI, Material UI, etc. for this task. Write your styles CSS from scratch, but you can use CSS-in-JS, CSS modules, Tailwind, or SCSS for pre-processing.
+This web application should be responsive; it should look great on mobile and tablet screens.
+Use a component-based approach and try to ensure your code is written in reusable blocks.
+Optimize for a good user experience and add some level of performance improvements.
+ReduxToolkit is preferred for state management, but this is optional and up to your discretion.
+You can also set up some form of linting or formatting for development if you want to.
+Write at least one test with any library of your choice
+Functional Requirements
+There are 3 template categories; Only one category can be active at any time.
+The active category is displayed as the Header of the Template Cards. E.g If the active category is Agriculture, the header should be “Agriculture Templates”
+“All templates” is active by default. Changing the category section resets all other filters and the Search bar value.
+Template category can either be "All", "Education", "E-commerce" or "Health".
+Users should also be able to search through each template category individually using only their template names.
+There are two additional filters for the templates - Alphabetical order (based on template names) and Date Created. Users should be able to filter each template category based on either not both (reset the other filter when one is active).
+The Alphabetical Order filter can either be "Default", "Ascending" or "Descending" order
+The Date created filter can either be "Default", "Ascending" or "Descending" order
+The template links don’t need to be active
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
